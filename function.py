@@ -1,13 +1,13 @@
 import json
 import base64
 import os
+import logging
 from requests_toolbelt.multipart import decoder
 from mailchimp3 import MailChimp
 from mailchimp3.mailchimpclient import MailChimpError
 
-username = os.environ['USERNAME']
-list_id = os.environ['LIST_ID']
-api_key = os.environ['API_KEY']
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def parse_email(content_type, body):
     multipart_string = base64.b64decode(body)
@@ -18,18 +18,26 @@ def parse_email(content_type, body):
     return None
 
 def my_handler(event, context):
+    api_key = os.environ['API_KEY']
+    username = os.environ['USERNAME']
+    list_id = os.environ['LIST_ID']
     client = MailChimp(mc_api=api_key, mc_user=username)
     content_type = event['headers']['Content-Type']
     email = parse_email(content_type, event['body'])
     try:
+        lists = client.lists.all()
+        logger.info(lists)
         members = client.lists.members.create(list_id, {
             'email_address': email,
             'status': 'subscribed'
         })
     except MailChimpError as e:
+        print(e)
         return {
-            'status': 400
+            'statusCode': 400,
+            'body': str(e)
         }
     return {
-        'status': 200
+        'statusCode': 200,
+        'body': 'subscribed'
     }
