@@ -9,3 +9,9 @@ People can deploy the zip file to his AWS Lambda Service directly, the only need
 ## Contribute
 
 Just Run *package.sh*. I recommend read it before you use it.
+
+## Some Knowledge References
+
+* [MailChimp SDK for Python3](https://github.com/VingtCinq/python-mailchimp)
+
+* [Fix Lambda CloudWatch Log Stream Error](https://aws.amazon.com/cn/premiumsupport/knowledge-center/lambda-cloudwatch-log-streams-error)
