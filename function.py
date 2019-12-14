@@ -35,9 +35,15 @@ def my_handler(event, context):
         print(e)
         return {
             'statusCode': 400,
+            "header": {
+                "Content-Type": "application/json"
+            },
             'body': str(e)
         }
     return {
         'statusCode': 200,
-        'body': 'subscribed'
+        "header": {
+            "Content-Type": "application/json"
+        }
+        'body': ''
     }
